@@ -3,7 +3,7 @@ unixelias/lamp
 
 ![docker_logo](https://raw.githubusercontent.com/unixelias/docker-lamp/master/docker_139x115.png)
 
-This Docker container implements a last generation of LAMP stack with a set of popular PHP modules. Includes support for [Composer](https://getcomposer.org/), [Yarn](http://yarn.io//) and [npm](https://www.npmjs.com/) package managers and a Postfix service to allow sending emails through PHP [mail()](http://php.net/manual/en/function.mail.php) function.
+This Docker container implements a last generation of LAMP stack with a set of popular PHP modules. Includes support for [Composer](https://getcomposer.org/), [Yarn](https://yarnpkg.com/) and [npm](https://www.npmjs.com/) package managers and a Postfix service to allow sending emails through PHP [mail()](http://php.net/manual/en/function.mail.php) function.
 
 I have made a docker-compose.yml file to show how to use and map additional services like MariaDB, Node.JS and MongoDB. This image still have Node.Js inside, but just for use of npm and library dependecy management. 
 
