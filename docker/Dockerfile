@@ -7,7 +7,7 @@ ARG VCS_REF
 ARG VCS_BRANCH
 
 LABEL Name="Development Web Server Stack" \
-      Version=${VCS_BRANCH} \
+      Version=$VCS_BRANCH \
       Architecture="x86_64" \
 			License="Apache License 2.0" \
       Dockerfile_location="/root/buildinfo" \
@@ -18,7 +18,7 @@ LABEL Name="Development Web Server Stack" \
       org.label-schema.vcs-ref=$VCS_REF \
       org.label-schema.vcs-url="https://github.com/unixelias/docker-lamp" \
       org.label-schema.vendor="Elias Alves at UFVJM" \
-      org.label-schema.version=${VCS_BRANCH} \
+      org.label-schema.version=$VCS_BRANCH \
       org.label-schema.version="0.1" \
       org.label-schema.version="dev" \
       org.label-schema.schema-version="1.0" \
