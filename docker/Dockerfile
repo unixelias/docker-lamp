@@ -55,9 +55,6 @@ ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR:pt:en' LC_ALL='pt_BR.UTF-8'
 
 RUN apt-get update \
 	&& apt-get upgrade -y \
-	&& wget https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
-	&& echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
-	&& apt-get update \
 	&& apt-get install -y --no-install-recommends \
 	apache2 \
 	composer \
@@ -99,10 +96,11 @@ RUN apt-get update \
 	php7.0-xsl \
 	php7.0-zip \
 	tree \
-	yarn \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g yarn grunt-cli gulp
+RUN npm install -g grunt-cli gulp
+
+RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 ENV LOG_STDOUT true
 ENV LOG_STDERR true
