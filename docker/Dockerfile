@@ -97,6 +97,7 @@ RUN buildDeps=" \
 	libfreetype6-dev \
 	libgmp-dev \
 	libjpeg62-turbo-dev \
+	libkrb5-dev \
 	libpng-dev \
 	libssl-dev \
 	libxml2-dev \
@@ -104,6 +105,7 @@ RUN buildDeps=" \
 	" \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends $buildDeps \
+	&& docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
 	&& docker-php-ext-install \
 		bz2 \
 		calendar \
