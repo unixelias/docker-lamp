@@ -90,6 +90,7 @@ RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 RUN buildDeps=" \
 	libbz2-dev \
+	libc-client2007e-dev \
 	libcurl4-openssl-dev \
 	libenchant-dev \
 	libmcrypt-dev \
