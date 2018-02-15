@@ -76,79 +76,86 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	&& apt-get upgrade -y \
 	&& apt-get install -y --no-install-recommends \
 	ftp \
-	libbz2-dev \
-	libcurl4-openssl-dev \
-	libenchant-dev \
-	libmcrypt-dev \
-	libfreetype6-dev \
-	libjpeg62-turbo-dev \
-	libpng-dev \
-	libssl-dev \
-	libxml2-dev \
 	mysql-client \
 	npm \
 	pkg-config \
 	postfix \
 	tree \
-	zlib1g-dev \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g grunt-cli getcomposer	
 
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
-RUN docker-php-ext-install \
-	bz2 \
-	calendar \
-	curl \
-	dom \
-	enchant \
-	fileinfo \
-	ftp \
-	gd \
-	gettext \
-	gmp \
-	hash \
-	imap \
-	interbase \
-	intl \
-	json \
-	ldap \
-	mbstring \
-	odbc \
-	opcache \
-	pcntl \
-	pdo \
-	pdo_dblib \
-	pdo_firebird \
-	pdo_mysql \
-	pdo_oci \
-	pdo_odbc \
-	pdo_pgsql \
-	pdo_sqlite \
-	pgsql \
-	phar \
-	readline \
-	recode \
-	session \
-	soap \
-	sockets \
-	tidy \
-	tokenizer \
-	xml \
-	xmlreader \
-	xmlrpc \
-	xmlwriter \
-	xsl \
-	zend_test \
-	zip \
-	&& apt-get clean && rm -rf /tmp && rm -rf /var/lib/apt/lists/*
 
-RUN pecl install mcrypt-1.0.1 \
+RUN buildDeps=" \
+	libbz2-dev \
+	libcurl4-openssl-dev \
+	libenchant-dev \
+	libmcrypt-dev \
+	libfreetype6-dev \
+	libgmp-dev \
+	libjpeg62-turbo-dev \
+	libpng-dev \
+	libssl-dev \
+	libxml2-dev \
+	zlib1g-dev \
+	" \
+	&& apt-get update \
+	&& apt-get install -y --no-install-recommends $buildDeps \
+	&& docker-php-ext-install \
+		bz2 \
+		calendar \
+		curl \
+		dom \
+		enchant \
+		fileinfo \
+		ftp \
+		gd \
+		gettext \
+		gmp \
+		hash \
+		imap \
+		interbase \
+		intl \
+		json \
+		ldap \
+		mbstring \
+		odbc \
+		opcache \
+		pcntl \
+		pdo \
+		pdo_dblib \
+		pdo_firebird \
+		pdo_mysql \
+		pdo_oci \
+		pdo_odbc \
+		pdo_pgsql \
+		pdo_sqlite \
+		pgsql \
+		phar \
+		readline \
+		recode \
+		session \
+		soap \
+		sockets \
+		tidy \
+		tokenizer \
+		xml \
+		xmlreader \
+		xmlrpc \
+		xmlwriter \
+		xsl \
+		zend_test \
+		zip \
+	&& pecl install mcrypt-1.0.1 \
 	&& docker-php-ext-enable mcrypt \
     && docker-php-ext-install -j$(nproc) iconv mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd
+    && docker-php-ext-install -j$(nproc) gd \
+	&& SUDO_FORCE_REMOVE=yes apt-get purge -y --auto-remove $buildDeps \
+	&& apt-get clean && rm -rf /tmp && rm -rf /var/lib/apt/lists/*
+
 RUN a2enmod rewrite \
 	&& a2enmod ssl \
 	&& a2enmod mcrypt \
