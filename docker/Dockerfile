@@ -40,12 +40,10 @@ COPY ./scripts/dev.conf /etc/apache2/sites-enabled/dev.conf
 RUN debconf-set-selections /tmp/debconf.selections \
 	&& chmod +x /usr/sbin/run-lamp.sh \
 	&& chown -R www-data:www-data /var/www/html \
-	&& echo "
-		# Display banner
-		if [ -f "$HOME/.banner" ]; then
-			cat "$HOME/.banner"
-		fi
-		" >> ~/.bashrc
+	&& echo "# Display banner " >> ~/.bashrc \
+	&& echo "if [ -f "$HOME/.banner" ]; then " >> ~/.bashrc \
+	&& echo "	cat "$HOME/.banner" " >> ~/.bashrc \
+	&& echo "fi " >> ~/.bashrc 
 	
 
 # Install pre dependencies and set locales
