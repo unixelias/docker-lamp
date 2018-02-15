@@ -69,6 +69,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	libfreetype6-dev \
 	libjpeg62-turbo-dev \
 	libpng-dev \
+	mysql-client \
 	npm \
 	postfix \
 	tree \
