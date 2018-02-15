@@ -37,9 +37,19 @@ COPY ./root/.banner ~/.banner
 COPY ./keys/server.crt /etc/apache2/ssl/server.crt
 COPY ./keys/server.key /etc/apache2/ssl/server.key
 COPY ./scripts/dev.conf /etc/apache2/sites-enabled/dev.conf
-	
+
+# Add custom configs
+RUN debconf-set-selections /tmp/debconf.selections \
+	&& chmod +x /usr/sbin/run-lamp.sh \
+	&& chown -R www-data:www-data /var/www/html \
+	&& echo "# Display banner " >> ~/.bashrc \
+	&& echo "if [ -f "$HOME/.banner" ]; then " >> ~/.bashrc \
+	&& echo "	cat "$HOME/.banner" " >> ~/.bashrc \
+	&& echo "fi " >> ~/.bashrc 
+		
 # Set languages and locales
 RUN apt-get update && apt-get install -y locales tzdata \
+	&& touch /usr/share/locale/locale.alias \
     && localedef -i pt_BR -c -f UTF-8 -A /usr/share/locale/locale.alias pt_BR.UTF-8 \
 	&& echo "LC_ALL=pt_BR.UTF-8" >> /etc/environment \
 	&& echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen \
@@ -68,8 +78,7 @@ RUN runDeps=" \
 		libfbclient2 \
 		locales \
 		mysql-client \
-		npm \
-		openssl \	
+		openssl \
 		perl \
 		pkg-config \
 		postfix \
@@ -162,15 +171,6 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Add custom configs
-RUN debconf-set-selections /tmp/debconf.selections \
-	&& chmod +x /usr/sbin/run-lamp.sh \
-	&& chown -R www-data:www-data /var/www/html \
-	&& echo "# Display banner " >> ~/.bashrc \
-	&& echo "if [ -f "$HOME/.banner" ]; then " >> ~/.bashrc \
-	&& echo "	cat "$HOME/.banner" " >> ~/.bashrc \
-	&& echo "fi " >> ~/.bashrc 
 
 VOLUME /var/www/html
 VOLUME /var/log/httpd
