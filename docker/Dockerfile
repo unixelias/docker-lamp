@@ -63,7 +63,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	zlib1g-dev \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g grunt-cli getcomposer
+RUN npm install -g grunt-cli getcomposer	
 
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
@@ -87,8 +87,7 @@ RUN a2enmod rewrite \
 	&& a2enmod ssl \
 	&& service apache2 restart
 
-RUN ln -s /usr/bin/nodejs /usr/bin/node \
-	&& chmod +x /usr/sbin/run-lamp.sh \
+RUN chmod +x /usr/sbin/run-lamp.sh \
 	&& chown -R www-data:www-data /var/www/html \
 	&& chmod +x -R ~/.bashrc
 
