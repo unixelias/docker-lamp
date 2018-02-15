@@ -27,7 +27,7 @@ LABEL Name="Development Web Server Stack" \
 ENV LOG_STDOUT='true' LOG_STDERR='true' LOG_LEVEL='warn' ALLOW_OVERRIDE='All'
 ENV DATE_TIMEZONE='America/Sao_Paulo'
 ENV TERM dumb
-ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR:pt:en' LC_ALL='pt_BR.UTF-8'
+ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR.UTF-8' LC_ALL='pt_BR.UTF-8'
 
 COPY Dockerfile /root/buildinfo
 COPY ./scripts/debconf.selections /tmp/
@@ -61,9 +61,9 @@ RUN apt-get update \
     vim \
     xz-utils \
     && locale-gen pt_BR pt_BR.UTF-8 en_US en_US.UTF-8 \
-    && echo "pt_BR pt_BR.UTF-8" >> /etc/locale.alias \
+    && echo "portuguese	pt_BR" >> /etc/locale.alias \
+	&& echo "portuguese	pt_BR.UTF-8" >> /etc/locale.alias \
 	&& dpkg-reconfigure -f noninteractive locales \
-	&& update-locale LANG=${LANG} LANGUAGE=${LANGUAGE} LC_ALL=${LC_ALL} \
 	&& source ~/.bashrc \
     && unlink /etc/localtime \
     && ln -s /usr/share/zoneinfo/Brazil/East /etc/localtime \
