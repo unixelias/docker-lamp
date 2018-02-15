@@ -78,6 +78,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	ftp \
 	libbz2-dev \
 	libcurl4-openssl-dev \
+	libenchant-dev \
 	libmcrypt-dev \
 	libfreetype6-dev \
 	libjpeg62-turbo-dev \
