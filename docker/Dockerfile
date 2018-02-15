@@ -50,10 +50,11 @@ RUN apt-get update \
 
 ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR:pt:en' LC_ALL='pt_BR.UTF-8'
 
-
-RUN apt-get update \
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
+	&& apt-get update \
 	&& apt-get upgrade -y \
 	&& apt-get install -y --no-install-recommends \
+	build-essential \
 	composer \
 	ftp \
 	npm \
