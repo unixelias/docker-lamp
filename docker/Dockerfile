@@ -63,8 +63,9 @@ RUN apt-get update \
     && locale-gen pt_BR pt_BR.UTF-8 en_US en_US.UTF-8 \
     && echo "portuguese	pt_BR" >> /etc/locale.alias \
 	&& echo "portuguese	pt_BR.UTF-8" >> /etc/locale.alias \
+	&& echo "english	en_US" >> /etc/locale.alias \
+	&& echo "english	en_US.UTF-8" >> /etc/locale.alias \
 	&& dpkg-reconfigure -f noninteractive locales \
-	&& source ~/.bashrc \
     && unlink /etc/localtime \
     && ln -s /usr/share/zoneinfo/Brazil/East /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
