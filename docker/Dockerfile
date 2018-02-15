@@ -63,7 +63,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	zlib1g-dev \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g grunt-cli gulp
+RUN npm install -g grunt-cli getcomposer
 
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
@@ -81,7 +81,7 @@ COPY ./keys/server.crt /etc/apache2/ssl/server.crt
 COPY ./keys/server.key /etc/apache2/ssl/server.key
 COPY ./scripts/dev.conf /etc/apache2/sites-enabled/dev.conf
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql zip mbstring composer
+RUN docker-php-ext-install mysqli pdo pdo_mysql zip mbstring
 
 RUN a2enmod rewrite \
 	&& a2enmod ssl \
