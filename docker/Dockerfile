@@ -86,9 +86,17 @@ RUN runDeps=" \
 		xz-utils \
 		tree \
 		" \
-	&& echo "postfix postfix/main_mailer_type select smarthost" | chroot $rootfs debconf-set-selections \
-	&& echo "postfix postfix/mailname string $hostname.localdomain" | chroot $rootfs debconf-set-selections \
-	&& echo "postfix postfix/relayhost string smtp.localdomain" | chroot $rootfs debconf-set-selections \
+	&& debconf-set-selections <<< "postfix postfix/main_cf_conversion_warning string true" \
+	&& debconf-set-selections <<< "postfix postfix/destinations string localhost" \
+	&& debconf-set-selections <<< "postfix postfix/root_address string max@m.local" \
+	&& debconf-set-selections <<< "postfix postfix/bad_recipient_delimiter string ''" \
+	&& debconf-set-selections <<< "postfix postfix/recipient_delim string +" \
+	&& debconf-set-selections <<< "postfix postfix/protocols string all" \
+	&& debconf-set-selections <<< "postfix postfix/relayhost string mail.example.org" \
+	&& debconf-set-selections <<< "postfix postfix/mailname string localhost" \
+	&& debconf-set-selections <<< "postfix postfix/mailbox_limit string 0" \
+	&& debconf-set-selections <<< "postfix postfix/chattr string false" \
+	&& debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Docker Postfix'" \
 	&& echo "postmaster:    root" >> /etc/aliases \
 	&& apt-get update \
     && apt-get install -y --no-install-recommends $runDeps \
