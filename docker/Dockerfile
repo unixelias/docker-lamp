@@ -24,16 +24,29 @@ LABEL Name="Development Web Server Stack" \
       org.label-schema.schema-version="1.0" \
       org.label-schema.docker.cmd="docker run -d -p [HOST WWW PORT NUMBER]:80 -v [HOST WWW DOCUMENT ROOT]:/var/www/html -v [HOST DB DOCUMENT ROOT]:/var/lib/mysql unixelias/lamp"
 
-ENV LOG_STDOUT true
-ENV LOG_STDERR true
-ENV LOG_LEVEL warn
-ENV ALLOW_OVERRIDE All
+ENV LOG_STDOUT='true' LOG_STDERR='true' LOG_LEVEL='warn' ALLOW_OVERRIDE='All'
 ENV DATE_TIMEZONE='America/Sao_Paulo'
 ENV TERM dumb
+ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR:pt:en' LC_ALL='pt_BR.UTF-8'
 
 COPY Dockerfile /root/buildinfo
 COPY ./scripts/debconf.selections /tmp/
-RUN debconf-set-selections /tmp/debconf.selections
+COPY ./scripts/index.php /var/www/html/
+COPY ./scripts/run-lamp.sh /usr/sbin/
+COPY ./root/.banner ~/.banner
+COPY ./keys/server.crt /etc/apache2/ssl/server.crt
+COPY ./keys/server.key /etc/apache2/ssl/server.key
+COPY ./scripts/dev.conf /etc/apache2/sites-enabled/dev.conf
+RUN debconf-set-selections /tmp/debconf.selections \
+	&& chmod +x /usr/sbin/run-lamp.sh \
+	&& chown -R www-data:www-data /var/www/html \
+	&& echo "
+		# Display banner
+		if [ -f "$HOME/.banner" ]; then
+			cat "$HOME/.banner"
+		fi
+		" >> ~/.bashrc
+	
 
 # Install pre dependencies and set locales
 RUN apt-get update \
@@ -49,15 +62,15 @@ RUN apt-get update \
     unzip \
     vim \
     xz-utils \
-    && locale-gen pt_BR pt_BR.UTF-8 \
+    && locale-gen pt_BR pt_BR.UTF-8 en_US en_US.UTF-8 \
     && echo "pt_BR pt_BR.UTF-8" >> /etc/locale.alias \
 	&& dpkg-reconfigure -f noninteractive locales \
+	&& update-locale LANG=${LANG} LANGUAGE=${LANGUAGE} LC_ALL=${LC_ALL} \
+	&& source ~/.bashrc \
     && unlink /etc/localtime \
     && ln -s /usr/share/zoneinfo/Brazil/East /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR:pt:en' LC_ALL='pt_BR.UTF-8'
 
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	&& apt-get update \
@@ -71,6 +84,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	libjpeg62-turbo-dev \
 	libpng-dev \
 	libssl-dev \
+	libxml2-dev \
 	mysql-client \
 	npm \
 	pkg-config \
@@ -82,17 +96,6 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 RUN npm install -g grunt-cli getcomposer	
 
 RUN curl -o- -L https://yarnpkg.com/install.sh | bash
-
-COPY ./scripts/index.php /var/www/html/
-COPY ./scripts/run-lamp.sh /usr/sbin/
-COPY ./root/ ~/
-COPY ./keys/server.crt /etc/apache2/ssl/server.crt
-COPY ./keys/server.key /etc/apache2/ssl/server.key
-COPY ./scripts/dev.conf /etc/apache2/sites-enabled/dev.conf
-
-RUN chmod +x /usr/sbin/run-lamp.sh \
-	&& chown -R www-data:www-data /var/www/html \
-	&& chmod +x -R ~/.bashrc
 
 RUN docker-php-ext-install \
 	bz2 \
