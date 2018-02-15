@@ -39,8 +39,7 @@ COPY ./keys/server.key /etc/apache2/ssl/server.key
 COPY ./scripts/dev.conf /etc/apache2/sites-enabled/dev.conf
 
 # Add custom configs
-RUN debconf-set-selections /tmp/debconf.selections \
-	&& chmod +x /usr/sbin/run-lamp.sh \
+RUN chmod +x /usr/sbin/run-lamp.sh \
 	&& chown -R www-data:www-data /var/www/html \
 	&& echo "# Display banner " >> ~/.bashrc \
 	&& echo "if [ -f "$HOME/.banner" ]; then " >> ~/.bashrc \
@@ -87,6 +86,10 @@ RUN runDeps=" \
 		xz-utils \
 		tree \
 		" \
+	&& echo "postfix postfix/main_mailer_type select smarthost" | chroot $rootfs debconf-set-selections \
+	&& echo "postfix postfix/mailname string $hostname.localdomain" | chroot $rootfs debconf-set-selections \
+	&& echo "postfix postfix/relayhost string smtp.localdomain" | chroot $rootfs debconf-set-selections \
+	&& echo "postmaster:    root" >> /etc/aliases \
 	&& apt-get update \
     && apt-get install -y --no-install-recommends $runDeps \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -107,7 +110,6 @@ RUN buildDeps=" \
 	libxml2-dev \
 	zlib1g-dev \
 	" \
-	&& echo "postmaster:    root" >> /etc/aliases \
 	&& apt-get update \
 	&& apt-get install -y --no-install-recommends $buildDeps \
 	&& docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
