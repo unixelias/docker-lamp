@@ -32,7 +32,8 @@ RUN debconf-set-selections /tmp/debconf.selections
 # Install pre dependencies and set locales
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    bzip2 \
+    build-essential \
+	bzip2 \
     git \
 	gnupg2 \
     locales \
@@ -55,8 +56,6 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	&& apt-get update \
 	&& apt-get upgrade -y \
 	&& apt-get install -y --no-install-recommends \
-	build-essential \
-	composer \
 	ftp \
 	npm \
 	postfix \
@@ -82,7 +81,7 @@ COPY ./keys/server.crt /etc/apache2/ssl/server.crt
 COPY ./keys/server.key /etc/apache2/ssl/server.key
 COPY ./scripts/dev.conf /etc/apache2/sites-enabled/dev.conf
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql zip mbstring
+RUN docker-php-ext-install mysqli pdo pdo_mysql zip mbstring composer
 
 RUN a2enmod rewrite \
 	&& a2enmod ssl \
