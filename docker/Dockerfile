@@ -93,6 +93,8 @@ RUN runDeps=" \
 
 # Install Build deps and PHP external modules
 RUN buildDeps=" \
+	firebird-dev \
+	libib-util \
 	libbz2-dev \
 	libc-client2007e-dev \
 	libcurl4-openssl-dev \
