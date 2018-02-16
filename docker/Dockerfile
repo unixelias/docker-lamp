@@ -161,7 +161,7 @@ RUN buildDeps=" \
 # Install npm and Yarn
 RUN apt-get update \
 	&& chmod 777 /tmp \
-	curl -sL https://deb.nodesource.com/setup_8.x | bash \
+	&& curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	&& apt-get update && apt-get install -y --no-install-recommends npm \
   	&& apt-get clean && rm -rf /var/lib/apt/lists/* \
 	&& npm install -g grunt-cli getcomposer	
