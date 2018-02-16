@@ -99,6 +99,7 @@ RUN buildDeps=" \
 	libldap2-dev \
 	libedit-dev \
 	libreadline-dev \
+	librecode-dev \
 	libbz2-dev \
 	libc-client2007e-dev \
 	libcurl4-openssl-dev \
