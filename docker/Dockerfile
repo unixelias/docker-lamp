@@ -164,7 +164,7 @@ RUN apt-get update \
 	&& curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	&& apt-get update && apt-get install -y --no-install-recommends npm \
   	&& apt-get clean && rm -rf /var/lib/apt/lists/* \
-	&& npm install -g grunt-cli getcomposer	
+	&& npm install -g grunt-cli getcomposer	\
 	&& curl -o- -L https://yarnpkg.com/install.sh | bash \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
