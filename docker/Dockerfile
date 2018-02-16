@@ -157,7 +157,6 @@ RUN buildDeps=" \
 	&& apt-get clean && rm -rf /tmp && rm -rf /var/lib/apt/lists/* \
 	&& a2enmod rewrite \
 	&& a2enmod ssl \
-	&& a2enmod mcrypt \
 	&& service apache2 restart
 
 # Install npm and Yarn
