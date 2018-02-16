@@ -156,8 +156,7 @@ RUN buildDeps=" \
 	&& SUDO_FORCE_REMOVE=yes apt-get purge -y --auto-remove $buildDeps \
 	&& apt-get clean && rm -rf /tmp && rm -rf /var/lib/apt/lists/* \
 	&& a2enmod rewrite \
-	&& a2enmod ssl \
-	&& service apache2 restart
+	&& a2enmod ssl
 
 # Install npm and Yarn
 RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
