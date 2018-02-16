@@ -97,6 +97,8 @@ RUN buildDeps=" \
 	libib-util \
 	libldb-dev \
 	libldap2-dev \
+	libedit-dev \
+	libreadline-dev \
 	libbz2-dev \
 	libc-client2007e-dev \
 	libcurl4-openssl-dev \
