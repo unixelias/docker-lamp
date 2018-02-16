@@ -130,9 +130,7 @@ RUN buildDeps=" \
 		interbase \
 		intl \
 		json \
-		ldap \
 		mbstring \
-		odbc \
 		opcache \
 		pcntl \
 		pdo \
@@ -146,13 +144,12 @@ RUN buildDeps=" \
 		sockets \
 		tidy \
 		tokenizer \
-		xml \
-		xmlreader \
 		xmlrpc \
-		xmlwriter \
 		xsl \
 		zend_test \
 		zip \
+	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
+	&& docker-php-ext-install ldap \
 	&& pecl install mcrypt-1.0.1 \
 	&& docker-php-ext-enable mcrypt \
     && docker-php-ext-install -j$(nproc) iconv mcrypt \
