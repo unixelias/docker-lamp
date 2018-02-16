@@ -93,10 +93,10 @@ RUN runDeps=" \
 		enchant \
 		libpng16-16 \
 		libc-client2007e \
-		libmcrypt.so.4 \
-		librecode.so.0 \
-		libtidy.so.5 \
-		libexslt.so.0 \
+		libmcrypt \
+		librecode \
+		libtidy \
+		libexslt \
 		" \
 	&& apt-get update \
     && apt-get install -y --no-install-recommends $runDeps \
