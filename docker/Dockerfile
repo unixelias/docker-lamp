@@ -100,6 +100,7 @@ RUN buildDeps=" \
 	libedit-dev \
 	libreadline-dev \
 	librecode-dev \
+	libtidy-dev \
 	libbz2-dev \
 	libc-client2007e-dev \
 	libcurl4-openssl-dev \
@@ -134,6 +135,7 @@ RUN buildDeps=" \
 		intl \
 		json \
 		mbstring \
+		odbc \
 		opcache \
 		pcntl \
 		pdo \
@@ -143,12 +145,9 @@ RUN buildDeps=" \
 		recode \
 		session \
 		soap \
-		sockets \
 		tidy \
-		tokenizer \
 		xmlrpc \
 		xsl \
-		zend_test \
 		zip \
 	&& docker-php-ext-configure ldap --with-libdir=lib/x86_64-linux-gnu/ \
 	&& docker-php-ext-install ldap \
