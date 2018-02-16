@@ -91,6 +91,14 @@ RUN runDeps=" \
     && apt-get install -y --no-install-recommends $runDeps \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install npm and Yarn
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
+	&& apt-get update && apt-get install -y --no-install-recommends npm \
+  	&& apt-get clean && rm -rf /var/lib/apt/lists/* \
+	&& npm install -g grunt-cli getcomposer	\
+	&& curl -o- -L https://yarnpkg.com/install.sh | bash \
+	&& apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Install Build deps and PHP external modules
 RUN buildDeps=" \
 	firebird-dev \
@@ -157,16 +165,6 @@ RUN buildDeps=" \
 	&& apt-get clean && rm -rf /tmp && rm -rf /var/lib/apt/lists/* \
 	&& a2enmod rewrite \
 	&& a2enmod ssl
-
-# Install npm and Yarn
-RUN apt-get update \
-	&& chmod 777 /tmp \
-	&& curl -sL https://deb.nodesource.com/setup_8.x | bash \
-	&& apt-get update && apt-get install -y --no-install-recommends npm \
-  	&& apt-get clean && rm -rf /var/lib/apt/lists/* \
-	&& npm install -g grunt-cli getcomposer	\
-	&& curl -o- -L https://yarnpkg.com/install.sh | bash \
-	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 VOLUME /var/www/html
 VOLUME /var/log/httpd
