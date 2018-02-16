@@ -135,7 +135,6 @@ RUN buildDeps=" \
 		pcntl \
 		pdo \
 		pdo_mysql \
-		pgsql \
 		phar \
 		readline \
 		recode \
