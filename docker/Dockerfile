@@ -86,16 +86,7 @@ RUN runDeps=" \
 		xz-utils \
 		tree \
 		" \
-	&& echo "postfix postfix/main_cf_conversion_warning string true" | debconf-set-selections \ 
-	&& echo "postfix postfix/destinations string localhost" | debconf-set-selections \
-	&& echo "postfix postfix/root_address string max@m.local" | debconf-set-selections \
-	&& echo "postfix postfix/bad_recipient_delimiter string ''" | debconf-set-selections \
-	&& echo "postfix postfix/recipient_delim string +" | debconf-set-selections \
-	&& echo "postfix postfix/protocols string all" | debconf-set-selections \
-	&& echo "postfix postfix/relayhost string mail.example.org" | debconf-set-selections \
-	&& echo "postfix postfix/mailname string localhost" | debconf-set-selections \
-	&& echo "postfix postfix/mailbox_limit string 0" | debconf-set-selections \
-	&& echo "postfix postfix/chattr string false" | debconf-set-selections \
+	&& echo "postfix postfix/mailname string localhost" | debconf-set-selections \ 
 	&& echo "postfix postfix/main_mailer_type string 'Docker Postfix'" | debconf-set-selections \
 	&& echo "postmaster:    root" >> /etc/aliases \
 	&& apt-get update \
