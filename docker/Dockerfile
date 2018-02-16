@@ -71,6 +71,10 @@ ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR.UTF-8' LC_ALL='pt_BR.UTF-8'
 
 # Install run deps
 RUN runDeps=" \
+		enchant \
+		libpng16-16 \
+		libc-client2007e \
+
 		build-essential \
 		bzip2 \
 		ftp \
@@ -86,6 +90,13 @@ RUN runDeps=" \
 		vim \
 		xz-utils \
 		tree \
+		enchant \
+		libpng16-16 \
+		libc-client2007e \
+		libmcrypt.so.4 \
+		librecode.so.0 \
+		libtidy.so.5 \
+		libexslt.so.0 \
 		" \
 	&& apt-get update \
     && apt-get install -y --no-install-recommends $runDeps \
