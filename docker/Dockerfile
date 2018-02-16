@@ -101,7 +101,6 @@ RUN buildDeps=" \
 	libreadline-dev \
 	librecode-dev \
 	libtidy-dev \
-	libiodbc2-dev \
 	libbz2-dev \
 	libc-client2007e-dev \
 	libcurl4-openssl-dev \
@@ -136,7 +135,6 @@ RUN buildDeps=" \
 		intl \
 		json \
 		mbstring \
-		odbc \
 		opcache \
 		pcntl \
 		pdo \
