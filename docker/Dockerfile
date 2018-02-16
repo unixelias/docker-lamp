@@ -96,6 +96,7 @@ RUN buildDeps=" \
 	firebird-dev \
 	libib-util \
 	libldb-dev \
+	libldap2-dev \
 	libbz2-dev \
 	libc-client2007e-dev \
 	libcurl4-openssl-dev \
