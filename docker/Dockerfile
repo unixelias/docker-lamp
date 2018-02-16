@@ -27,10 +27,10 @@ LABEL Name="Development Web Server Stack" \
 ENV LOG_STDOUT='true' LOG_STDERR='true' LOG_LEVEL='warn' ALLOW_OVERRIDE='All'
 ENV DATE_TIMEZONE='America/Sao_Paulo'
 ENV TERM dumb
-ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR.UTF-8' LC_ALL='pt_BR.UTF-8'
 
 COPY Dockerfile /root/buildinfo
 COPY ./scripts/debconf.selections /tmp/
+RUN	debconf-set-selections /tmp/debconf.selections
 COPY ./scripts/index.php /var/www/html/
 COPY ./scripts/run-lamp.sh /usr/sbin/
 COPY ./root/.banner ~/.banner
@@ -66,6 +66,8 @@ RUN apt-get update && apt-get install -y locales tzdata \
     && ln -s /usr/share/zoneinfo/Brazil/East /etc/localtime \
     && dpkg-reconfigure -f noninteractive tzdata \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
+	
+ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR.UTF-8' LC_ALL='pt_BR.UTF-8'
 
 # Install run deps
 RUN runDeps=" \
@@ -79,16 +81,12 @@ RUN runDeps=" \
 		mysql-client \
 		openssl \
 		perl \
-		pkg-config \
 		postfix \
 		unzip \
 		vim \
 		xz-utils \
 		tree \
 		" \
-	&& echo "postfix postfix/mailname string localhost" | debconf-set-selections \ 
-	&& echo "postfix postfix/main_mailer_type string 'Docker Postfix'" | debconf-set-selections \
-	&& echo "postmaster:    root" >> /etc/aliases \
 	&& apt-get update \
     && apt-get install -y --no-install-recommends $runDeps \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
