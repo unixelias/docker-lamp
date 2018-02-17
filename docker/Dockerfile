@@ -74,7 +74,6 @@ RUN runDeps=" \
 		enchant \
 		libpng16-16 \
 		libc-client2007e \
-
 		build-essential \
 		bzip2 \
 		ftp \
@@ -93,10 +92,10 @@ RUN runDeps=" \
 		enchant \
 		libpng16-16 \
 		libc-client2007e \
-		libmcrypt \
-		librecode \
-		libtidy \
-		libexslt \
+		mcrypt \
+		librecode0 \
+		libtidy5 \
+		libxslt1.1 \
 		" \
 	&& apt-get update \
     && apt-get install -y --no-install-recommends $runDeps \
