@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM httpd
 
 MAINTAINER Elias Alves <elias.alves@ufvjm.edu.br>
 
@@ -29,6 +29,31 @@ COPY Dockerfile /root/buildinfo
 COPY ./scripts/debconf.selections /tmp/
 RUN debconf-set-selections /tmp/debconf.selections
 
+# Set languages and locales
+RUN apt-get update && apt-get upgrade && apt-get install -y locales tzdata \
+	&& touch /usr/share/locale/locale.alias \
+    && localedef -i pt_BR -c -f UTF-8 -A /usr/share/locale/locale.alias pt_BR.UTF-8 \
+	&& echo "LC_ALL=pt_BR.UTF-8" >> /etc/environment \
+	&& echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen \
+	&& echo "LANG=pt_BR.UTF-8" > /etc/locale.conf \
+	&& echo "LC_ALL=en_US.UTF-8" >> /etc/environment \
+	&& echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen \
+	&& echo "LANG=en_US.UTF-8" > /etc/locale.conf \
+    && echo "portuguese	pt_BR" >> /etc/locale.alias \
+	&& echo "portuguese	pt_BR.UTF-8" >> /etc/locale.alias \
+	&& echo "english	en_US" >> /etc/locale.alias \
+	&& echo "english	en_US.UTF-8" >> /etc/locale.alias \
+	&& locale-gen pt_BR pt_BR.UTF-8 en_US en_US.UTF-8 \
+	&& dpkg-reconfigure -f noninteractive locales \
+    && unlink /etc/localtime \
+    && ln -s /usr/share/zoneinfo/Brazil/East /etc/localtime \
+    && dpkg-reconfigure -f noninteractive tzdata \
+	&& apt-get clean && rm -rf /var/lib/apt/lists/*
+	
+ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR.UTF-8' LC_ALL='pt_BR.UTF-8'
+
+
+
 # Install pre dependencies and set locales
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -43,25 +68,16 @@ RUN apt-get update \
     vim \
 	wget \
     xz-utils \
-    && locale-gen pt \
-    && echo "pt_BR pt_BR.UTF-8" >> /etc/locale.alias \
-    && unlink /etc/localtime \
-    && ln -s /usr/share/zoneinfo/Brazil/East /etc/localtime \
-    && dpkg-reconfigure -f noninteractive tzdata \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-ENV LANG='pt_BR.UTF-8' LANGUAGE='pt_BR:pt:en' LC_ALL='pt_BR.UTF-8'
-
-
+	
+# Install Build deps and PHP external modules
 RUN apt-get update \
 	&& apt-get upgrade -y \
 	&& apt-get install -y --no-install-recommends \
-	apache2 \
 	composer \
 	ftp \
 	php7.0 \
 	libapache2-mod-php7.0 \
-	npm \
 	postfix \
 	php7.0-bz2 \
 	php7.0-cgi \
@@ -98,9 +114,13 @@ RUN apt-get update \
 	tree \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g grunt-cli gulp
-
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+# Install npm and Yarn
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
+	&& apt-get update && apt-get install -y --no-install-recommends npm \
+  	&& apt-get clean && rm -rf /var/lib/apt/lists/* \
+	&& npm install -g grunt-cli getcomposer	\
+	&& curl -o- -L https://yarnpkg.com/install.sh | bash \
+	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV LOG_STDOUT true
 ENV LOG_STDERR true
@@ -113,7 +133,8 @@ COPY ./scripts/index.php /var/www/html/
 COPY ./scripts/run-lamp.sh /usr/sbin/
 COPY ./root/ ~/
 
-RUN a2enmod rewrite
+RUN a2enmod rewrite \
+	&& a2enmod ssl
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN chmod +x /usr/sbin/run-lamp.sh
 RUN chown -R www-data:www-data /var/www/html
