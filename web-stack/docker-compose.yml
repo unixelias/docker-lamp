@@ -38,8 +38,19 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=my-admin-pw
 
+  www:
+    image: nginx
+    volumes:
+    - ./code/html:/usr/share/nginx/html
+    ports:
+    - "8080:80"
+    depends_on:
+     - db
+    environment:
+    - NGINX_PORT=80
+    
   web:
-    image: unixelias/lamp:dev-ssl
+    image: unixelias/lamp
     hostname: web
     ports:
       - 80:80
@@ -54,6 +65,7 @@ services:
      - db
      - node
      - mongodb
+    command: "/usr/sbin/run-lamp.sh"
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
