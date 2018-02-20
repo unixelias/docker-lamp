@@ -70,8 +70,8 @@ RUN apt-get update \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Build deps and PHP external modules
-RUN echo "deb http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
-	&& echo "deb-src http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
+RUN echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list \
+	&& echo "deb-src http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list \
 	&& curl -L http://www.dotdeb.org/dotdeb.gpg -o dotdeb.gpg \
 	&& cat dotdeb.gpg | apt-key add - \
 	&& apt-get update \
