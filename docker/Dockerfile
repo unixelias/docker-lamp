@@ -63,10 +63,9 @@ RUN apt-get update \
     locales \
 	openssl \	
 	perl \
+	nano \
     tzdata \
     unzip \
-    vim \
-	wget \
     xz-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -76,8 +75,8 @@ RUN apt-get update \
 # Install Build deps and PHP external modules
 RUN echo "deb http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
 	&& echo "deb-src http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
-	&& wget https://www.dotdeb.org/dotdeb.gpg \
-	&& apt-key add dotdeb.gpg \
+	&& curl -L http://www.dotdeb.org/dotdeb.gpg -o dotdeb.gpg \
+	&& cat dotdeb.gpg | apt-key add - \
 	&& apt-get update \
 	&& apt-get upgrade -y \
 	&& apt-get install -y --no-install-recommends \
