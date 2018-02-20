@@ -30,7 +30,7 @@ COPY ./scripts/debconf.selections /tmp/
 RUN debconf-set-selections /tmp/debconf.selections
 
 # Set languages and locales
-RUN apt-get update && apt-get upgrade && apt-get install -y locales tzdata \
+RUN apt-get update && apt-get upgrade -y && apt-get install -y locales tzdata \
 	&& touch /usr/share/locale/locale.alias \
     && localedef -i pt_BR -c -f UTF-8 -A /usr/share/locale/locale.alias pt_BR.UTF-8 \
 	&& echo "LC_ALL=pt_BR.UTF-8" >> /etc/environment \
