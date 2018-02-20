@@ -69,9 +69,6 @@ RUN apt-get update \
     xz-utils \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Apache + PHP requires preforking Apache for best results & enable Apache SSL
-# forward request and error logs to docker log collector
-
 # Install Build deps and PHP external modules
 RUN echo "deb http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
 	&& echo "deb-src http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
@@ -79,43 +76,40 @@ RUN echo "deb http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
 	&& cat dotdeb.gpg | apt-key add - \
 	&& apt-get update \
 	&& apt-get upgrade -y \
-	&& apt-get install -y --no-install-recommends \
+	&& apt-get install -y \
 		ftp \
-		php \
-		libapache2-mod-php \
+		php7.0 \
+		libapache2-mod-php7.0 \
 		postfix \
-		php-bz2 \
-		php-cgi \
-		php-cli \
-		php-common \
-		php-curl \
-		php-dev \
-		php-enchant \
-		php-fpm \
-		php-gd \
-		php-gmp \
-		php-imap \
-		php-interbase \
-		php-intl \
-		php-json \
-		php-ldap \
-		php-mcrypt \
-		php-mbstring \
-		php-mysql \
-		php-odbc \
-		php-opcache \
-		php-pgsql \
-		php-phpdbg \
-		php-pspell \
-		php-readline \
-		php-recode \
-		php-snmp \
-		php-sqlite3 \
-		php-sybase \
-		php-tidy \
-		php-xmlrpc \
-		php-xsl \
-		php-zip \
+		php7.0-bz2 \
+		php7.0-cgi \
+		php7.0-cli \
+		php7.0-common \
+		php7.0-curl \
+		php7.0-dev \
+		php7.0-enchant \
+		php7.0-fpm \
+		php7.0-gd \
+		php7.0-gmp \
+		php7.0-imap \
+		php7.0-interbase \
+		php7.0-intl \
+		php7.0-json \
+		php7.0-mcrypt \
+		php7.0-mbstring \
+		php7.0-mysql \
+		php7.0-odbc \
+		php7.0-opcache \
+		php7.0-phpdbg \
+		php7.0-pspell \
+		php7.0-readline \
+		php7.0-recode \
+		php7.0-snmp \
+		php7.0-sybase \
+		php7.0-tidy \
+		php7.0-xmlrpc \
+		php7.0-xsl \
+		php7.0-zip \
 		tree \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
@@ -139,6 +133,9 @@ COPY ./scripts/index.php /var/www/html/
 COPY ./scripts/run-lamp.sh /usr/sbin/
 COPY ./root/ ~/
 
+
+# Apache + PHP requires preforking Apache for best results & enable Apache SSL
+# forward request and error logs to docker log collector
 RUN a2enmod mpm_prefork \
             ssl \
             rewrite \
