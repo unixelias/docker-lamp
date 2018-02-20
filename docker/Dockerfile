@@ -75,7 +75,6 @@ RUN echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list \
 	&& curl -L http://www.dotdeb.org/dotdeb.gpg -o dotdeb.gpg \
 	&& cat dotdeb.gpg | apt-key add - \
 	&& apt-get update \
-	&& apt-get upgrade -y \
 	&& apt-get install -y \
 		ftp \
 		php7.0 \
