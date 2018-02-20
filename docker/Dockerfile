@@ -77,9 +77,10 @@ RUN echo "deb http://packages.dotdeb.org jessie all" >> /etc/apt/sources.list \
 	&& apt-get update \
 	&& apt-get install -y \
 		ftp \
-		php7.0 \
+		libssl-dev \
 		libapache2-mod-php7.0 \
 		postfix \
+		php7.0 \
 		php7.0-bz2 \
 		php7.0-cgi \
 		php7.0-cli \
