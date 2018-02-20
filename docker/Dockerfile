@@ -72,13 +72,6 @@ RUN apt-get update \
 
 # Apache + PHP requires preforking Apache for best results & enable Apache SSL
 # forward request and error logs to docker log collector
-RUN a2dismod mpm_event \
-    && a2enmod mpm_prefork \
-            ssl \
-            rewrite \
-    && a2ensite default-ssl \
-    && ln -sf /dev/stdout /var/log/apache2/access.log \
-	&& ln -sf /dev/stderr /var/log/apache2/error.log
 
 # Install Build deps and PHP external modules
 RUN echo "deb http://packages.dotdeb.org stretch all" >> /etc/apt/sources.list \
@@ -135,6 +128,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash \
 	&& curl -o- -L https://yarnpkg.com/install.sh | bash \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/*
 
+
 ENV LOG_STDOUT true
 ENV LOG_STDERR true
 ENV LOG_LEVEL warn
@@ -146,9 +140,13 @@ COPY ./scripts/index.php /var/www/html/
 COPY ./scripts/run-lamp.sh /usr/sbin/
 COPY ./root/ ~/
 
-RUN a2enmod rewrite \
-	&& a2enmod ssl
-RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN a2enmod mpm_prefork \
+            ssl \
+            rewrite \
+    && a2ensite default-ssl \
+    && ln -sf /dev/stdout /var/log/apache2/access.log \
+	&& ln -sf /dev/stderr /var/log/apache2/error.log
+	
 RUN chmod +x /usr/sbin/run-lamp.sh
 RUN chown -R www-data:www-data /var/www/html
 

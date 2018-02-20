@@ -39,7 +39,7 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=my-admin-pw
 
   web:
-    image: unixelias/lamp:demo
+    image: unixelias/lamp
     hostname: web
     ports:
       - 80:80
