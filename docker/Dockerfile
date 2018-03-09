@@ -78,6 +78,7 @@ RUN apt-get update \
 	php7.0-json \
 	php7.0-ldap \
 	php7.0-mcrypt \
+	php7.0-mbstring \
 	php7.0-mysql \
 	php7.0-odbc \
 	php7.0-opcache \
